@@ -1,56 +1,70 @@
-# Getting Started Todo App
+# 📝 Todo App — Full-stack приложение в Docker
 
-This project provides a sample todo list application. It demonstrates all of
-the current Docker best practices, ranging from the Compose file, to the
-Dockerfile, to CI (using GitHub Actions), and running tests. It's intended to 
-be well-documented to ensure anyone can come in and easily learn.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
-## Application architecture
+Учебный проект, в котором я разбирал контейнеризацию full-stack приложения:
+React-фронтенд, Node.js-бэкенд, база данных MySQL, Docker Compose и CI на GitHub Actions.
 
-![image](https://github.com/docker/getting-started-todo-app/assets/313480/c128b8e4-366f-4b6f-ad73-08e6652b7c4d)
+> Проект основан на официальном примере
+> [docker/getting-started-todo-app](https://github.com/docker/getting-started-todo-app).
 
+---
 
-This sample application is a simple React frontend that receives data from a
-Node.js backend. 
+## 🏗 Архитектура
 
-When the application is packaged and shipped, the frontend is compiled into
-static HTML, CSS, and JS and then bundled with the backend where it is then
-served as static assets. So no... there is no server-side rendering going on
-with this sample app.
+![Архитектура приложения](https://github.com/docker/getting-started-todo-app/assets/313480/c128b8e4-366f-4b6f-ad73-08e6652b7c4d)
 
-During development, since the backend and frontend need different dev tools, 
-they are split into two separate services. This allows [Vite](https://vitejs.dev/) 
-to manage the React app while [nodemon](https://nodemon.io/) works with the 
-backend. With containers, it's easy to separate the development needs!
+| Компонент | Технология | Назначение |
+|-----------|------------|------------|
+| Frontend  | React + Vite | Интерфейс списка задач |
+| Backend   | Node.js + nodemon | REST API и раздача статики |
+| Database  | MySQL | Хранение задач |
+| DB UI     | phpMyAdmin | Просмотр базы в режиме разработки |
+| Proxy     | Traefik | Маршрутизация `localhost` / `db.localhost` |
 
-## Development
+**В продакшене** фронтенд собирается в статические HTML/CSS/JS и раздаётся бэкендом —
+получается один контейнер, без server-side rendering.
 
-To spin up the project, simply install Docker Desktop and then run the following 
-commands:
+**В разработке** фронтенд и бэкенд работают как отдельные сервисы: Vite обеспечивает
+горячую перезагрузку React, а nodemon перезапускает сервер при изменении кода.
 
-```
-git clone https://github.com/docker/getting-started-todo-app
-cd getting-started-todo-app
+---
+
+## 🚀 Быстрый старт
+
+Нужен только [Docker Desktop](https://www.docker.com/products/docker-desktop/) — ставить Node.js или MySQL не требуется.
+
+```bash
+git clone https://github.com/<your-username>/<repo-name>
+cd <repo-name>
 docker compose up --watch
 ```
 
-You'll see several container images get downloaded from Docker Hub and, after a
-moment, the application will be up and running! No need to install or configure
-anything on your machine!
+После запуска:
 
-Simply open to [http://localhost](http://localhost) to see the app up and running!
+- 🌐 Приложение — [http://localhost](http://localhost)
+- 🗄 phpMyAdmin — [http://db.localhost](http://db.localhost)
 
-Any changes made to either the backend or frontend should be seen immediately
-without needing to rebuild or restart the containers.
+Изменения во фронтенде и бэкенде подхватываются сразу, без пересборки контейнеров.
 
-To help with the database, the development stack also includes phpMyAdmin, which
-can be accessed at [http://db.localhost](http://db.localhost) (most browsers will 
-resolve `*.localhost` correctly, so no hosts file changes should be required).
+Остановить и удалить контейнеры:
 
-### Tearing it down
-
-When you're done, simply remove the containers by running the following command:
-
-```
+```bash
 docker compose down
 ```
+
+---
+
+## 📚 Что разобрано в проекте
+
+- Разделение dev- и prod-окружений через multi-stage Dockerfile
+- Оркестрация нескольких сервисов в Docker Compose
+- Hot reload внутри контейнеров с помощью `docker compose watch`
+- Связка React-фронтенда с Node.js API
+- Работа с MySQL в контейнере
+- Запуск тестов и сборки в CI (GitHub Actions)
